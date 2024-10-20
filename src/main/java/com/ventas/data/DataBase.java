@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class DataBase {
     public static final String DB_PATH = "ArticulosDB.sqlite";
@@ -24,19 +26,42 @@ public class DataBase {
 
         this.dataSource.setUrl("jdbc:sqlite:" + DB_PATH);
 
-        try (Connection conn = this.dataSource.getConnection()) {
-            System.out.println("Conexión con DataSource establecida.");
+        System.out.println("Conexión con DataSource establecida.");
 
-            if (!dbFile){
-                Statement statement = conn.createStatement();
-                statement.executeUpdate(FileRead.read("VentasDB.sql"));
-                statement.close();
+        if (!dbFile){
+            this.secureTransaction(stmt->{
+                try {
+                    stmt.executeUpdate(FileRead.read("VentasDB.sql"));
+                } catch (SQLException | URISyntaxException | IOException e) {
+                    //throw new RuntimeException(e);
+                    e.printStackTrace();
+                    return false;
+                }
+                return true;
+            });
+        }
+
+    }
+
+    public void secureTransaction(Function<Statement, Boolean> exec){
+        try (Connection conn = this.dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+            try(Statement stmt = conn.createStatement()){
+                if(exec.apply(stmt)){
+                    conn.commit();
+                }else{
+                    conn.rollback();
+                }
+            }catch (Exception e) {
+                conn.rollback();
+                e.printStackTrace();
             }
 
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public SQLiteDataSource getDataSource() {
         return dataSource;
@@ -85,10 +110,10 @@ public class DataBase {
     private Object getValue(ResultSet resultSet, int column) throws SQLException {
         String columnTypeName = resultSet.getMetaData().getColumnTypeName(column);
 
-        switch (columnTypeName){
-            case "BOOLEAN": return resultSet.getBoolean(column);
-            default: return resultSet.getObject(column);
-        }
+        return switch (columnTypeName) {
+            case "BOOLEAN" -> resultSet.getBoolean(column);
+            default -> resultSet.getObject(column);
+        };
     }
 
 }

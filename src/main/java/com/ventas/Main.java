@@ -18,14 +18,19 @@ public class Main {
     public static final DataBase  DB = new DataBase();
 
     public static void main(String[] args) {
-        try (Connection conn = DB.getDataSource().getConnection()){
-            Statement stmt = conn.createStatement();
+        ArrayList<UsuarioModel> usuarioModels = new ArrayList<>();
 
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM usuario");
-            ArrayList<UsuarioModel> usuarioModels = DB.<UsuarioModel>parseResults(resultSet, UsuarioModel.class);
-            usuarioModels.forEach(System.out::println);
-        } catch (SQLException | NoSuchFieldException | IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
-        }
+        DB.secureTransaction(stmt->{
+            try {
+                ResultSet resultSet = stmt.executeQuery("SELECT * FROM usuario");
+                usuarioModels.addAll(DB.parseResults(resultSet, UsuarioModel.class));
+            } catch (SQLException | NoSuchFieldException | IllegalAccessException | InstantiationException e) {
+                throw new RuntimeException(e);
+            }
+
+            return true;
+        });
+
+        usuarioModels.forEach(System.out::println);
     }
 }
