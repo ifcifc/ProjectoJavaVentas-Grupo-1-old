@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class DataBase {
-    public static final String DB_PATH = "ArticulosDB.sqlite";
+    public static final String DB_PATH = "VentasDB.sqlite";
     private final SQLiteDataSource dataSource;
 
     public DataBase() {

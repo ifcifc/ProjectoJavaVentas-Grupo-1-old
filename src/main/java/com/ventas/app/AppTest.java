@@ -48,7 +48,7 @@ public class AppTest extends AppBase{
         cs.insert(new CarritoModel(1, 30, false));*/
         //ss.insert(new StockModel(2, 3));
 
-/*        System.out.println(cs.getAll());
+        System.out.println(cs.getAll());
         System.out.println(cs.delete(3));
         System.out.println(cs.getAll());
         System.out.println(cs.getById(3));
@@ -56,7 +56,7 @@ public class AppTest extends AppBase{
         CarritoModel byId = cs.getById(2);
         byId.setComprado(true);
         cs.update(byId);
-        System.out.println(cs.getById(2));*/
+        System.out.println(cs.getById(2));
 
     }
 }

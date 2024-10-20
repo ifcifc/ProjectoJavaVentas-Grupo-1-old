@@ -1,4 +1,11 @@
--- usuario definition
+CREATE TABLE articulo (
+    id_articulo INTEGER PRIMARY KEY AUTOINCREMENT,
+    cod INTEGER NOT NULL,
+    nombre TEXT NOT NULL,
+    descripcion TEXT,
+    precio REAL NOT NULL,
+    isDelete BOOLEAN DEFAULT false
+);
 
 CREATE TABLE usuario (
     id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -9,34 +16,20 @@ CREATE TABLE usuario (
     isDelete BOOLEAN DEFAULT false
 );
 
--- articulo definition
-
-CREATE TABLE articulo (
-    id_articulo INTEGER PRIMARY KEY AUTOINCREMENT,
-    cod INTEGER NOT NULL,
-    nombre TEXT NOT NULL,
-    descripcion TEXT,
-    precio REAL NOT NULL,
-    isDelete BOOLEAN DEFAULT false
-);
-
--- stock definition
-
 CREATE TABLE stock (
-	id_stock INTEGER PRIMARY KEY AUTOINCREMENT,
-	id_articulo INTEGER NOT NULL,
-	cantidad INTEGER NOT NULL,
-	isDelete BOOLEAN DEFAULT (false),
-	CONSTRAINT STOCK_PK PRIMARY KEY (id_stock)
+    id_stock INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_articulo INTEGER NOT NULL,
+    cantidad INTEGER NOT NULL,
+    isDelete BOOLEAN DEFAULT false,
+    FOREIGN KEY (id_articulo) REFERENCES articulo(id_articulo)
 );
-
--- carrito definition
 
 CREATE TABLE carrito (
-	id_carrito INTEGER PRIMARY KEY AUTOINCREMENT,
-	id_usuario INTEGER NOT NULL,
-	id_articulo INTEGER NOT NULL,
-	isComprado BOOLEAN NOT NULL,
-	isDelete BOOLEAN DEFAULT (false),
-	CONSTRAINT CARRITO_PK PRIMARY KEY (id_carrito)
+    id_carrito INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER NOT NULL,
+    id_articulo INTEGER NOT NULL,
+    isComprado BOOLEAN NOT NULL,
+    isDelete BOOLEAN DEFAULT false,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    FOREIGN KEY (id_articulo) REFERENCES articulo(id_articulo)
 );
