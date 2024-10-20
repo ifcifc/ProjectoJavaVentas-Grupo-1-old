@@ -1,11 +1,11 @@
-package com.articulos.models;
+package com.ventas.models;
 
-public abstract class BaseModel {
-    protected long ID;
+import java.io.Serializable;
+
+public abstract class BaseModel implements Serializable {
     protected boolean isDelete;
 
     public BaseModel(long ID) {
-        this.ID = ID;
         this.isDelete = false;
     }
 
@@ -13,15 +13,7 @@ public abstract class BaseModel {
         this(0);
     }
 
-    public long getID() {
-        return ID;
-    }
-
-    public boolean setID(long ID) {
-        if(this.ID!=0)return false;
-        this.ID = ID;
-        return true;
-    }
+    public abstract long getID();
 
     public boolean isDelete() {
         return isDelete;
