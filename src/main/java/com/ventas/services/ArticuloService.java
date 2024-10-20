@@ -2,7 +2,7 @@ package com.ventas.services;
 
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
-import com.ventas.models.BaseModel;
+import com.ventas.models.ArticuloModel;
 import com.ventas.models.UsuarioModel;
 
 import java.sql.ResultSet;
@@ -11,40 +11,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class UsuarioService implements IService<UsuarioModel>{
+public class ArticuloService implements IService<ArticuloModel>{
     @Override
-    public List<UsuarioModel> getAll() {
+    public List<ArticuloModel> getAll() {
         DataBase db = AppBase.getInstance().getDb();
-        ArrayList<UsuarioModel> usuarioModels = new ArrayList<>();
+        ArrayList<ArticuloModel> models = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
-                ResultSet rs = stmt.executeQuery("SELECT * FROM usuario WHERE NOT isDelete");
-                usuarioModels.addAll(db.parseResults(rs, UsuarioModel.class));
+                ResultSet rs = stmt.executeQuery("SELECT * FROM articulo WHERE NOT isDelete");
+                models.addAll(db.parseResults(rs, ArticuloModel.class));
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
             return true;
         });
-        return usuarioModels;
+        return models;
     }
 
     @Override
-    public UsuarioModel getById(int id) {
+    public ArticuloModel getById(int id) {
         DataBase db = AppBase.getInstance().getDb();
-        AtomicReference<UsuarioModel> usuario = new AtomicReference<>();
+        AtomicReference<ArticuloModel> usuario = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
                         stmt.setInt(1, id);
                         ResultSet rs = stmt.executeQuery();
                         if(!rs.next())return false;
-                        usuario.set(db.parseResult(rs, UsuarioModel.class));
+                        usuario.set(db.parseResult(rs, ArticuloModel.class));
                     } catch (Exception e) {
                         e.printStackTrace();
                         return false;
                     }
                     return true;
-        },"SELECT * FROM usuario WHERE NOT isDelete AND id_usuario=?");
+        },"SELECT * FROM articulo WHERE NOT isDelete AND id_articulo=?");
 
         return usuario.get();
     }
@@ -60,59 +60,44 @@ public class UsuarioService implements IService<UsuarioModel>{
                 e.printStackTrace();
                 return false;
             }
-        },"UPDATE usuario SET isDelete=1 WHERE id_usuario=?");
+        },"UPDATE articulo SET isDelete=1 WHERE id_articulo=? AND NOT isDelete");
     }
 
     @Override
-    public boolean update(UsuarioModel model) {
+    public boolean update(ArticuloModel model) {
         DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
-                stmt.setString(1, model.getNombre());
-                stmt.setString(2, model.getEmail());
-                stmt.setBoolean(3, model.isEmpleado());
-                stmt.setInt(4, model.getID());
+                stmt.setLong(1, model.getCod());
+                stmt.setString(2, model.getNombre());
+                stmt.setString(3, model.getDescripcion());
+                stmt.setDouble(4, model.getPrecio());
+                stmt.setInt(5, model.getID());
                 return stmt.executeUpdate()!=0;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
-        },"UPDATE usuario SET nombre=?, email=?, isEmpleado=? WHERE id_usuario=?");
-
-
-
+        },"UPDATE articulo SET cod=?,nombre=?, descripcion=?, precio=? WHERE id_articulo=? AND NOT isDelete");
     }
 
     @Override
-    public boolean insert(UsuarioModel model) {
+    public boolean insert(ArticuloModel model) {
         DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
-                stmt.setString(1, model.getNombre());
-                stmt.setString(2, model.getEmail());
-                stmt.setString(3, model.getPassword());
-                stmt.setBoolean(4, model.isEmpleado());
+                stmt.setLong(1, model.getCod());
+                stmt.setString(2, model.getNombre());
+                stmt.setString(3, model.getDescripcion());
+                stmt.setDouble(4, model.getPrecio());
                 return stmt.executeUpdate()!=0;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
-        },"INSERT INTO usuario (id_usuario, nombre, email, password, isEmpleado) VALUES (NULL, ?, ?, ?, ?)");
+
+        },"INSERT INTO articulo (id_articulo, cod, nombre, descripcion, precio) VALUES (NULL, ?, ?, ?, ?)");
     }
 
-    public boolean changePassword(int id, String oldPassword, String newPassword) {
-        DataBase db = AppBase.getInstance().getDb();
-        return db.secureTransaction(stmt->{
-            try {
-                stmt.setString(1, newPassword);
-                stmt.setString(2, oldPassword);
-                stmt.setInt(3, id);
-                return stmt.executeUpdate()!=0;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
-        },"UPDATE usuario SET password=? WHERE password=? AND id_usuario=?");
-    }
 
 }

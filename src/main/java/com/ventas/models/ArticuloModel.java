@@ -1,13 +1,17 @@
 package com.ventas.models;
 
 public class ArticuloModel extends BaseModel{
-    private long id_articulo, cod;
+    private int id_articulo;
+    private long cod;
     private String nombre, descripcion;
     private double precio;
 
-    public ArticuloModel(long id_articulo, long cod, String nombre, String descripción, double precio) {
+    public ArticuloModel() {
+    }
+
+    public ArticuloModel(long cod, String nombre, String descripción, double precio) {
         super();
-        this.id_articulo = id_articulo;
+        this.id_articulo = 0;
         this.cod = cod;
         this.nombre = nombre;
         this.descripcion = descripción;
@@ -47,7 +51,7 @@ public class ArticuloModel extends BaseModel{
     }
 
     @Override
-    public long getID() {
+    public int getID() {
         return this.id_articulo;
     }
 

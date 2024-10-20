@@ -13,7 +13,7 @@ public abstract class BaseModel implements Serializable {
         this(0);
     }
 
-    public abstract long getID();
+    public abstract int getID();
 
     public boolean isDelete() {
         return isDelete;

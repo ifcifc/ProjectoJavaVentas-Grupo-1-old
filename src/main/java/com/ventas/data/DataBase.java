@@ -43,22 +43,51 @@ public class DataBase {
 
     }
 
-    public void secureTransaction(Function<Statement, Boolean> exec){
+    public boolean secureTransaction(Function<PreparedStatement, Boolean> exec, String sql){
         try (Connection conn = this.dataSource.getConnection()) {
             conn.setAutoCommit(false);
-            try(Statement stmt = conn.createStatement()){
-                if(exec.apply(stmt)){
+            try(PreparedStatement stmt = conn.prepareStatement(sql)){
+                Boolean apply = exec.apply(stmt);
+                if(apply){
                     conn.commit();
                 }else{
                     conn.rollback();
                 }
+
+                return apply;
             }catch (Exception e) {
                 conn.rollback();
                 e.printStackTrace();
+                return false;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean secureTransaction(Function<Statement, Boolean> exec){
+        try (Connection conn = this.dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+            try(Statement stmt = conn.createStatement()){
+                Boolean apply = exec.apply(stmt);
+                if(apply){
+                    conn.commit();
+                }else{
+                    conn.rollback();
+                }
+                return apply;
+            }catch (Exception e) {
+                conn.rollback();
+                e.printStackTrace();
+
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -67,7 +96,7 @@ public class DataBase {
         return dataSource;
     }
 
-    public HashMap<String, Object> toMap(ResultSet resultSet) throws SQLException {
+    public HashMap<String, Object> parseMap(ResultSet resultSet) throws SQLException {
         HashMap<String, Object> parse = new HashMap<>();
 
         ResultSetMetaData metaData = resultSet.getMetaData();
@@ -79,9 +108,19 @@ public class DataBase {
         return parse;
     }
 
+
+    public ArrayList<HashMap<String, Object>> parseMaps(ResultSet resultSet) throws SQLException {
+        ArrayList<HashMap<String, Object>> parse = new ArrayList<>();
+
+        while ( resultSet.next() ) {
+            parse.add(this.parseMap(resultSet));
+        }
+
+        return parse;
+    }
+
     public <T extends BaseModel> ArrayList<T> parseResults(ResultSet resultSet, Class<T> modelClass) throws SQLException, NoSuchFieldException, IllegalAccessException, InstantiationException {
         ArrayList<T> ret = new ArrayList<>();
-
         while ( resultSet.next() ) {
             ret.add(this.parseResult(resultSet, modelClass));
         }

@@ -1,10 +1,12 @@
 package com.ventas.models;
 
 public class CarritoModel extends BaseModel{
-    private long id_carrito, id_usuario, id_articulo;
+    private int id_carrito;
+    private int id_usuario;
+    private int id_articulo;
     private boolean isComprado;
 
-    public CarritoModel(long id_carrito, long id_usuario, long id_articulo, boolean isComprado) {
+    public CarritoModel(int id_carrito, int id_usuario, int id_articulo, boolean isComprado) {
         this.id_carrito = id_carrito;
         this.id_usuario = id_usuario;
         this.id_articulo = id_articulo;
@@ -15,7 +17,7 @@ public class CarritoModel extends BaseModel{
         return id_usuario;
     }
 
-    public void setId_usuario(long id_usuario) {
+    public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
 
@@ -23,7 +25,7 @@ public class CarritoModel extends BaseModel{
         return id_articulo;
     }
 
-    public void setId_articulo(long id_articulo) {
+    public void setId_articulo(int id_articulo) {
         this.id_articulo = id_articulo;
     }
 
@@ -35,7 +37,7 @@ public class CarritoModel extends BaseModel{
         isComprado = comprado;
     }
 
-    public long getID() {
+    public int getID() {
         return this.id_carrito;
     }
 

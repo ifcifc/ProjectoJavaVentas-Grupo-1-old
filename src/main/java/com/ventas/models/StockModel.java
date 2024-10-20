@@ -1,21 +1,22 @@
 package com.ventas.models;
 
 public class StockModel extends BaseModel{
-    private long id_stock, id_articulo;
+    private int id_stock;
+    private int id_articulo;
     private int cantidad;
 
-    public StockModel(long id_stock, long id_articulo, int cantidad) {
+    public StockModel(int id_stock, int id_articulo, int cantidad) {
         super();
         this.id_stock = id_stock;
         this.id_articulo = id_articulo;
         this.cantidad = cantidad;
     }
 
-    public long getId_articulo() {
+    public int getId_articulo() {
         return id_articulo;
     }
 
-    public void setId_articulo(long id_articulo) {
+    public void setId_articulo(int id_articulo) {
         this.id_articulo = id_articulo;
     }
 
@@ -28,7 +29,7 @@ public class StockModel extends BaseModel{
     }
 
     @Override
-    public long getID() {
+    public int getID() {
         return this.id_articulo;
     }
 

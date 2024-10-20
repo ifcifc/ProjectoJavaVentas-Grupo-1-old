@@ -2,7 +2,6 @@ package com.ventas.services;
 
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
-import com.ventas.models.BaseModel;
 import com.ventas.models.UsuarioModel;
 
 import java.sql.ResultSet;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class UsuarioService implements IService<UsuarioModel>{
+public class StockService implements IService<UsuarioModel>{
     @Override
     public List<UsuarioModel> getAll() {
         DataBase db = AppBase.getInstance().getDb();

@@ -1,16 +1,16 @@
 package com.ventas.models;
 
 public class UsuarioModel extends BaseModel {
-    private long id_usuario;
+    private int id_usuario;
     private String nombre, email, password;
     private boolean isEmpleado;
 
     public UsuarioModel() {
     }
 
-    public UsuarioModel(long id_usuario, String nombre, String email, String password, boolean isEmpleado) {
+    public UsuarioModel(String nombre, String email, String password, boolean isEmpleado) {
         super();
-        this.id_usuario = id_usuario;
+        this.id_usuario = 0;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
@@ -51,7 +51,7 @@ public class UsuarioModel extends BaseModel {
 
 
     @Override
-    public long getID() {
+    public int getID() {
         return this.id_usuario;
     }
 
