@@ -6,14 +6,17 @@ public class CarritoModel extends BaseModel{
     private int id_articulo;
     private boolean isComprado;
 
-    public CarritoModel(int id_carrito, int id_usuario, int id_articulo, boolean isComprado) {
-        this.id_carrito = id_carrito;
+    public CarritoModel() {
+    }
+
+    public CarritoModel(int id_usuario, int id_articulo, boolean isComprado) {
+        this.id_carrito = 0;
         this.id_usuario = id_usuario;
         this.id_articulo = id_articulo;
         this.isComprado = isComprado;
     }
 
-    public long getId_usuario() {
+    public int getId_usuario() {
         return id_usuario;
     }
 
@@ -21,7 +24,7 @@ public class CarritoModel extends BaseModel{
         this.id_usuario = id_usuario;
     }
 
-    public long getId_articulo() {
+    public int getId_articulo() {
         return id_articulo;
     }
 
