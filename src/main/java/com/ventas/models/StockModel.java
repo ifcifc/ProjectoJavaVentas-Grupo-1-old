@@ -5,7 +5,10 @@ public class StockModel extends BaseModel{
     private int id_articulo;
     private int cantidad;
 
-    public StockModel(int id_stock, int id_articulo, int cantidad) {
+    public StockModel() {
+    }
+
+    public StockModel(int id_articulo, int cantidad) {
         super();
         this.id_stock = id_stock;
         this.id_articulo = id_articulo;
