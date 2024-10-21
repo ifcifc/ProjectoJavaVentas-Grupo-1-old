@@ -2,7 +2,7 @@ package com.ventas.services;
 
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
-import com.ventas.models.CarritoModel;
+import com.ventas.models.VentaModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,42 +10,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class CarritoService implements IService<CarritoModel>{
+public class VentaService implements IService<VentaModel>{
     @Override
-    public List<CarritoModel> getAll() {
+    public List<VentaModel> getAll() {
         DataBase db = AppBase.getInstance().getDb();
-        ArrayList<CarritoModel> CarritoModels = new ArrayList<>();
+        ArrayList<VentaModel> models = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
-                ResultSet rs = stmt.executeQuery("SELECT * FROM carrito WHERE NOT isDelete");
-                CarritoModels.addAll(db.parseResults(rs, CarritoModel.class));
+                ResultSet rs = stmt.executeQuery("SELECT * FROM venta WHERE NOT isDelete");
+                models.addAll(db.parseResults(rs, VentaModel.class));
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
             return true;
         });
-        return CarritoModels;
+        return models;
     }
 
     @Override
-    public CarritoModel getById(int id) {
+    public VentaModel getById(int id) {
         DataBase db = AppBase.getInstance().getDb();
-        AtomicReference<CarritoModel> carrito = new AtomicReference<>();
+        AtomicReference<VentaModel> usuario = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
                         stmt.setInt(1, id);
                         ResultSet rs = stmt.executeQuery();
                         if(!rs.next())return false;
-                        carrito.set(db.parseResult(rs, CarritoModel.class));
+                        usuario.set(db.parseResult(rs, VentaModel.class));
                     } catch (Exception e) {
                         e.printStackTrace();
                         return false;
                     }
                     return true;
-        },"SELECT * FROM carrito WHERE NOT isDelete AND id_carrito=?");
+        },"SELECT * FROM venta WHERE NOT isDelete AND id_venta=?");
 
-        return carrito.get();
+        return usuario.get();
     }
 
     @Override
@@ -59,38 +59,42 @@ public class CarritoService implements IService<CarritoModel>{
                 e.printStackTrace();
                 return false;
             }
-        },"UPDATE carrito SET isDelete=1 WHERE id_carrito=?");
+        },"UPDATE venta SET isDelete=1 WHERE id_venta=? AND NOT isDelete");
     }
 
     @Override
-    public boolean update(CarritoModel model) {
+    public boolean update(VentaModel model) {
         DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
-                stmt.setInt(1, model.getId_usuario());
-                stmt.setInt(2, model.getId_articulo());
-                stmt.setInt(3, model.getID());
+                stmt.setLong(1, model.getId_usuario());
+                stmt.setString(2, model.getFecha());
+                stmt.setDouble(3, model.getMonto());
+                stmt.setInt(4, model.getID());
                 return stmt.executeUpdate()!=0;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
-        },"UPDATE carrito SET id_usuario=?, id_articulo=? WHERE id_carrito=? AND NOT isDelete");
+        },"UPDATE venta SET id_usuario=?, fecha=?, monto=? WHERE id_venta=?");
+
     }
 
     @Override
-    public boolean insert(CarritoModel model) {
+    public boolean insert(VentaModel model) {
         DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
-                stmt.setInt(1, model.getId_usuario());
-                stmt.setInt(2, model.getId_articulo());
+                stmt.setLong(1, model.getId_usuario());
+                stmt.setString(2, model.getFecha());
+                stmt.setDouble(3, model.getMonto());
                 return stmt.executeUpdate()!=0;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
-        },"INSERT INTO carrito (id_carrito, id_usuario, id_articulo) VALUES (NULL, ?, ?)");
+
+        },"INSERT INTO venta (id_venta, id_usuario, fecha, monto) VALUES(NULL, ?, ?, ?)");
 
     }
 

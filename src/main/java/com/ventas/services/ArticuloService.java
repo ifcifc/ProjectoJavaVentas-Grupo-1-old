@@ -3,7 +3,6 @@ package com.ventas.services;
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
 import com.ventas.models.ArticuloModel;
-import com.ventas.models.UsuarioModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

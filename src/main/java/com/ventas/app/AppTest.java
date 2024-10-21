@@ -1,17 +1,9 @@
 package com.ventas.app;
 
-import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
-import com.ventas.models.StockModel;
-import com.ventas.models.UsuarioModel;
-import com.ventas.services.ArticuloService;
-import com.ventas.services.CarritoService;
-import com.ventas.services.StockService;
-import com.ventas.services.UsuarioService;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import com.ventas.models.MovimientoModel;
+import com.ventas.models.VentaModel;
+import com.ventas.services.*;
 
 public class AppTest extends AppBase{
     public AppTest() {
@@ -21,6 +13,7 @@ public class AppTest extends AppBase{
 
     @Override
     public void run() {
+        /*
         UsuarioService us = new UsuarioService();
         System.out.println(us.getAll());
         System.out.println(us.getById(1));
@@ -42,10 +35,10 @@ public class AppTest extends AppBase{
         System.out.println(ss.getById(2));
         System.out.println("-------------");
         CarritoService cs = new CarritoService();
-        /*cs.insert(new CarritoModel(1, 3, false));
+       cs.insert(new CarritoModel(1, 3, false));
         cs.insert(new CarritoModel(1, 3, false));
         cs.insert(new CarritoModel(1, 3, false));
-        cs.insert(new CarritoModel(1, 30, false));*/
+        cs.insert(new CarritoModel(1, 30, false));
         //ss.insert(new StockModel(2, 3));
 
         System.out.println(cs.getAll());
@@ -56,7 +49,47 @@ public class AppTest extends AppBase{
         CarritoModel byId = cs.getById(2);
         byId.setComprado(true);
         cs.update(byId);
-        System.out.println(cs.getById(2));
+        System.out.println(cs.getById(2));*/
+        this.addService(new VentaService());
+        VentaService vs = this.getService(VentaService.class);
+        /*vs.insert(new VentaModel(1,1,"24/04/2024"));
+        vs.insert(new VentaModel(2,1,"24/04/2024"));
+        vs.insert(new VentaModel(3,1,"24/04/2024"));
+        vs.insert(new VentaModel(4,1,"24/04/2024"));*/
+        /*vs.getAll().forEach(System.out::println);
+        System.out.println("----------------");
+        System.out.println(vs.delete(2));
+        System.out.println("----------------");
+        VentaModel byId = vs.getById(1);
+        System.out.println(byId);
+        System.out.println("----------------");
+        byId.setFecha("asdasd");
+        System.out.println(vs.update(byId));
+        System.out.println("----------------");
+        vs.getAll().forEach(System.out::println);
+        System.out.println("----------------");
+        System.out.println(vs.getById(1));
+        System.out.println("----------------");*/
+        this.addService(new MovimientoService());
+        MovimientoService ms = this.getService(MovimientoService.class);
+        /*ms.insert(new MovimientoModel(1,0,0,0, ""));
+        ms.insert(new MovimientoModel(2,0,0,0, ""));
+        ms.insert(new MovimientoModel(3,0,0,0, ""));*/
+
+        ms.getAll().forEach(System.out::println);
+        System.out.println("----------------");
+        System.out.println(ms.delete(2));;
+        System.out.println("----------------");
+        ms.getAll().forEach(System.out::println);
+        System.out.println("----------------");
+        MovimientoModel byId = ms.getById(3);
+        System.out.println(byId);
+        System.out.println("----------------");
+        byId.setFecha("algo");
+        System.out.println(ms.update(byId));
+        System.out.println("----------------");
+        ms.getAll().forEach(System.out::println);
+        System.out.println("----------------");
 
     }
 }
