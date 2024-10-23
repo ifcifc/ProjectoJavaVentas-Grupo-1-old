@@ -5,6 +5,9 @@ import com.ventas.models.MovimientoModel;
 import com.ventas.models.VentaModel;
 import com.ventas.services.*;
 
+import java.util.Comparator;
+import java.util.Optional;
+
 public class AppTest extends AppBase{
     public AppTest() {
         super();
@@ -72,10 +75,13 @@ public class AppTest extends AppBase{
         System.out.println("----------------");*/
         this.addService(new MovimientoService());
         MovimientoService ms = this.getService(MovimientoService.class);
-        /*ms.insert(new MovimientoModel(1,0,0,0, ""));
-        ms.insert(new MovimientoModel(2,0,0,0, ""));
-        ms.insert(new MovimientoModel(3,0,0,0, ""));*/
+        ms.insert(new MovimientoModel(1,0,0,0, ""));
+        ms.insert(new MovimientoModel(25,0,0,0, ""));
+        ms.insert(new MovimientoModel(3,0,0,0, ""));
 
+
+        Optional<MovimientoModel> max = ms.getAll().stream().max(Comparator.comparingInt(MovimientoModel::getID));
+        System.out.println(max.get());
         ms.getAll().forEach(System.out::println);
         System.out.println("----------------");
         System.out.println(ms.delete(2));;

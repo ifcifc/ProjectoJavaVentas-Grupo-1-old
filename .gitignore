@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/bin/
+/.idea/encodings.xml
+/.idea/uiDesigner.xml
+/VentasDB.sqlite

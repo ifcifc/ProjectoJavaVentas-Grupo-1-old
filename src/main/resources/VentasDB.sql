@@ -38,7 +38,7 @@ CREATE TABLE carrito (
 CREATE TABLE venta (
 	id_venta INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     id_usuario INTEGER NOT NULL,
-	fecha TEXT NOT NULL,
+	fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
 	monto NUMERIC(8,4) NOT NULL,
     isDelete BOOLEAN DEFAULT false,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
@@ -61,7 +61,7 @@ CREATE TABLE movimiento (
 	monto NUMERIC(8,4) NOT NULL,
 	id_usuario_to INTEGER,
 	id_venta INTEGER,
-	fecha TEXT NOT NULL,
+	fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     isDelete BOOLEAN DEFAULT false,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
     FOREIGN KEY (id_usuario_to) REFERENCES usuario(id_usuario),
