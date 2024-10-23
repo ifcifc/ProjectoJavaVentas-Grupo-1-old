@@ -8,4 +8,8 @@
             30
         </session-timeout>
     </session-config>
+    
+    <listener>
+        <listener-class>com.ventas.listeners.AppStartupListener</listener-class>
+    </listener>
 </web-app>

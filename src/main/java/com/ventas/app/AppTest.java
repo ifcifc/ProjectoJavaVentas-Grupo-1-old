@@ -11,7 +11,9 @@ import java.util.Optional;
 public class AppTest extends AppBase{
     public AppTest() {
         super();
-        INSTANCE = this;
+        
+        this.addService(new MovimientoService());
+        System.out.println("RUUUUN");
     }
 
     @Override
@@ -73,7 +75,6 @@ public class AppTest extends AppBase{
         System.out.println("----------------");
         System.out.println(vs.getById(1));
         System.out.println("----------------");*/
-        this.addService(new MovimientoService());
         MovimientoService ms = this.getService(MovimientoService.class);
         ms.insert(new MovimientoModel(1,0,0,0, ""));
         ms.insert(new MovimientoModel(25,0,0,0, ""));
