@@ -1,6 +1,6 @@
 package com.ventas.services;
 
-import com.ventas.app.AppBase;
+import com.ventas.app.App;
 import com.ventas.data.DataBase;
 import com.ventas.models.ArticuloModel;
 
@@ -11,9 +11,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ArticuloService implements IService<ArticuloModel>{
+    
+    private DataBase db;
+
+    public ArticuloService() {
+        db = App.getInstance().getDb();
+    }
+    
+    
     @Override
     public List<ArticuloModel> getAll() {
-        DataBase db = AppBase.getInstance().getDb();
         ArrayList<ArticuloModel> models = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
@@ -30,7 +37,6 @@ public class ArticuloService implements IService<ArticuloModel>{
 
     @Override
     public ArticuloModel getById(int id) {
-        DataBase db = AppBase.getInstance().getDb();
         AtomicReference<ArticuloModel> usuario = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
@@ -50,7 +56,6 @@ public class ArticuloService implements IService<ArticuloModel>{
 
     @Override
     public boolean delete(int id) {
-        DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, id);
@@ -64,7 +69,6 @@ public class ArticuloService implements IService<ArticuloModel>{
 
     @Override
     public boolean update(ArticuloModel model) {
-        DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
                 stmt.setLong(1, model.getCod());
@@ -82,7 +86,6 @@ public class ArticuloService implements IService<ArticuloModel>{
 
     @Override
     public boolean insert(ArticuloModel model) {
-        DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
                 stmt.setLong(1, model.getCod());

@@ -1,5 +1,6 @@
 package com.ventas.services;
 
+import com.ventas.app.App;
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
 import com.ventas.models.MovimientoModel;
@@ -11,10 +12,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MovimientoService implements IService<MovimientoModel>{
+    private DataBase db;
 
+    public MovimientoService() {
+        db = App.getInstance().getDb();
+    }
+    
     @Override
     public List<MovimientoModel> getAll() {
-        DataBase db = AppBase.getInstance().getDb();
+
         ArrayList<MovimientoModel> models = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
@@ -31,7 +37,7 @@ public class MovimientoService implements IService<MovimientoModel>{
 
     @Override
     public MovimientoModel getById(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         AtomicReference<MovimientoModel> usuario = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
@@ -51,7 +57,7 @@ public class MovimientoService implements IService<MovimientoModel>{
 
     @Override
     public boolean delete(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, id);
@@ -65,7 +71,7 @@ public class MovimientoService implements IService<MovimientoModel>{
 
     @Override
     public boolean update(MovimientoModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setLong(1, model.getId_usuario());
@@ -84,7 +90,7 @@ public class MovimientoService implements IService<MovimientoModel>{
 
     @Override
     public boolean insert(MovimientoModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setLong(1, model.getId_usuario());

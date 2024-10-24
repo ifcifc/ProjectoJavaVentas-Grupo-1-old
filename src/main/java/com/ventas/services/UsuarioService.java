@@ -1,5 +1,6 @@
 package com.ventas.services;
 
+import com.ventas.app.App;
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
 import com.ventas.models.BaseModel;
@@ -12,9 +13,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class UsuarioService implements IService<UsuarioModel>{
+    private DataBase db;
+
+    public UsuarioService() {
+        db = App.getInstance().getDb();
+    }
+    
     @Override
     public List<UsuarioModel> getAll() {
-        DataBase db = AppBase.getInstance().getDb();
+        
         ArrayList<UsuarioModel> usuarioModels = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
@@ -31,7 +38,7 @@ public class UsuarioService implements IService<UsuarioModel>{
 
     @Override
     public UsuarioModel getById(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         AtomicReference<UsuarioModel> usuario = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
@@ -51,7 +58,7 @@ public class UsuarioService implements IService<UsuarioModel>{
 
     @Override
     public boolean delete(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, id);
@@ -65,7 +72,7 @@ public class UsuarioService implements IService<UsuarioModel>{
 
     @Override
     public boolean update(UsuarioModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setString(1, model.getNombre());
@@ -85,7 +92,7 @@ public class UsuarioService implements IService<UsuarioModel>{
 
     @Override
     public boolean insert(UsuarioModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setString(1, model.getNombre());
@@ -101,7 +108,7 @@ public class UsuarioService implements IService<UsuarioModel>{
     }
 
     public boolean changePassword(int id, String oldPassword, String newPassword) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setString(1, newPassword);

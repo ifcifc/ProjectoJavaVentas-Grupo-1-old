@@ -1,5 +1,6 @@
 package com.ventas.services;
 
+import com.ventas.app.App;
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
 import com.ventas.models.StockModel;
@@ -11,9 +12,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class StockService implements IService<StockModel>{
+    private DataBase db;
+
+    public StockService() {
+        db = App.getInstance().getDb();
+    }
+    
     @Override
     public List<StockModel> getAll() {
-        DataBase db = AppBase.getInstance().getDb();
+        
         ArrayList<StockModel> StockModels = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
@@ -30,7 +37,7 @@ public class StockService implements IService<StockModel>{
 
     @Override
     public StockModel getById(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         AtomicReference<StockModel> stock = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
@@ -50,7 +57,7 @@ public class StockService implements IService<StockModel>{
 
     @Override
     public boolean delete(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, id);
@@ -64,7 +71,7 @@ public class StockService implements IService<StockModel>{
 
     @Override
     public boolean update(StockModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, model.getCantidad());
@@ -81,7 +88,7 @@ public class StockService implements IService<StockModel>{
 
     @Override
     public boolean insert(StockModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, model.getId_articulo());

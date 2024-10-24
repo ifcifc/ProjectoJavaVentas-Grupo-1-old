@@ -1,23 +1,24 @@
 package com.ventas.app;
 
-import com.ventas.models.CarritoModel;
-import com.ventas.models.MovimientoModel;
-import com.ventas.models.VentaModel;
 import com.ventas.services.*;
 
-import java.util.Comparator;
-import java.util.Optional;
 
 public class AppTest extends AppBase{
+
     public AppTest() {
         super();
-        
-        this.addService(new MovimientoService());
         System.out.println("RUUUUN");
     }
 
     @Override
     public void run() {
+        this.addService(new ArticuloService());
+        this.addService(new CarritoService());
+        this.addService(new MovimientoService());
+        this.addService(new StockService());
+        this.addService(new UsuarioService());
+        this.addService(new VentaService());
+
         /*
         UsuarioService us = new UsuarioService();
         System.out.println(us.getAll());
@@ -55,8 +56,8 @@ public class AppTest extends AppBase{
         byId.setComprado(true);
         cs.update(byId);
         System.out.println(cs.getById(2));*/
-        this.addService(new VentaService());
-        VentaService vs = this.getService(VentaService.class);
+        //this.addService(new VentaService());
+        //VentaService vs = this.getService(VentaService.class);
         /*vs.insert(new VentaModel(1,1,"24/04/2024"));
         vs.insert(new VentaModel(2,1,"24/04/2024"));
         vs.insert(new VentaModel(3,1,"24/04/2024"));
@@ -75,7 +76,7 @@ public class AppTest extends AppBase{
         System.out.println("----------------");
         System.out.println(vs.getById(1));
         System.out.println("----------------");*/
-        MovimientoService ms = this.getService(MovimientoService.class);
+        /*MovimientoService ms = this.getService(MovimientoService.class);
         ms.insert(new MovimientoModel(1,0,0,0, ""));
         ms.insert(new MovimientoModel(25,0,0,0, ""));
         ms.insert(new MovimientoModel(3,0,0,0, ""));
@@ -96,7 +97,7 @@ public class AppTest extends AppBase{
         System.out.println(ms.update(byId));
         System.out.println("----------------");
         ms.getAll().forEach(System.out::println);
-        System.out.println("----------------");
+        System.out.println("----------------");*/
 
-    }
+    } 
 }

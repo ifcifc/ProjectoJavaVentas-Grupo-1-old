@@ -1,5 +1,6 @@
 package com.ventas.services;
 
+import com.ventas.app.App;
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
 import com.ventas.models.CarritoModel;
@@ -11,9 +12,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CarritoService implements IService<CarritoModel>{
+        
+    private DataBase db;
+
+    public CarritoService() {
+        db = App.getInstance().getDb();
+    }
+    
     @Override
     public List<CarritoModel> getAll() {
-        DataBase db = AppBase.getInstance().getDb();
         ArrayList<CarritoModel> CarritoModels = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
@@ -30,7 +37,6 @@ public class CarritoService implements IService<CarritoModel>{
 
     @Override
     public CarritoModel getById(int id) {
-        DataBase db = AppBase.getInstance().getDb();
         AtomicReference<CarritoModel> carrito = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
@@ -50,7 +56,6 @@ public class CarritoService implements IService<CarritoModel>{
 
     @Override
     public boolean delete(int id) {
-        DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, id);
@@ -64,7 +69,6 @@ public class CarritoService implements IService<CarritoModel>{
 
     @Override
     public boolean update(CarritoModel model) {
-        DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, model.getId_usuario());
@@ -80,7 +84,6 @@ public class CarritoService implements IService<CarritoModel>{
 
     @Override
     public boolean insert(CarritoModel model) {
-        DataBase db = AppBase.getInstance().getDb();
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, model.getId_usuario());

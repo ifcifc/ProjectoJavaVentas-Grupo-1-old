@@ -1,5 +1,6 @@
 package com.ventas.services;
 
+import com.ventas.app.App;
 import com.ventas.app.AppBase;
 import com.ventas.data.DataBase;
 import com.ventas.models.VentaModel;
@@ -11,9 +12,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class VentaService implements IService<VentaModel>{
+    private DataBase db;
+
+    public VentaService() {
+        db = App.getInstance().getDb();
+    }
+    
     @Override
     public List<VentaModel> getAll() {
-        DataBase db = AppBase.getInstance().getDb();
+        
         ArrayList<VentaModel> models = new ArrayList<>();
         db.secureTransaction(stmt->{
             try {
@@ -30,7 +37,7 @@ public class VentaService implements IService<VentaModel>{
 
     @Override
     public VentaModel getById(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         AtomicReference<VentaModel> usuario = new AtomicReference<>();
         db.secureTransaction(stmt->{
                     try {
@@ -50,7 +57,7 @@ public class VentaService implements IService<VentaModel>{
 
     @Override
     public boolean delete(int id) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setInt(1, id);
@@ -64,7 +71,7 @@ public class VentaService implements IService<VentaModel>{
 
     @Override
     public boolean update(VentaModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setLong(1, model.getId_usuario());
@@ -82,7 +89,7 @@ public class VentaService implements IService<VentaModel>{
 
     @Override
     public boolean insert(VentaModel model) {
-        DataBase db = AppBase.getInstance().getDb();
+        
         return db.secureTransaction(stmt->{
             try {
                 stmt.setLong(1, model.getId_usuario());

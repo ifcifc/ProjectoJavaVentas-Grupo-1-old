@@ -4,6 +4,7 @@
  */
 package com.ventas.listeners;
 
+import com.ventas.app.App;
 import com.ventas.app.AppTest;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -15,7 +16,9 @@ import javax.servlet.ServletContextListener;
 public class AppStartupListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        AppTest.getInstance().run();
+        App
+        .getInstance()
+        .run();
     }
 
 }
